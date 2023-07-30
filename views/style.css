@@ -119,12 +119,12 @@ button a{
 #lgt{
     text-decoration: none;
     color: #198754;
-    margin: 0 2% 0 0;
+    margin: 0 5% 0 0;
     background-color:none;
     border-radius: 5px;
     border: #198754 1px solid;
     transition: 0.5s;
-    padding: 1.5% 2.5% 2% 2.5%;
+    padding: 1.5% 7% 2% 6%;
     font-family: 'Arimo', sans-serif;
 font-family: 'Heebo', sans-serif;
 font-family: 'Kodchasan', sans-serif;
@@ -186,9 +186,16 @@ font-family: 'Quicksand', sans-serif;
 }
 #gif{
     border-radius: 10px;
-    margin-left: 50%;
+    margin-left: -10%;
 }
 #para{
+    margin-left: 5%;
+    width: 80%;
+}
+.main-content{
+    justify-content: center;
+}
+div.main-content p{
     width: 40%;
 }
 @media screen and (max-width: 900px) {
@@ -240,5 +247,10 @@ div#para p{
     font-size: 1.5rem;
 }
 #un{
-    margin-top: 10%;
+    margin: 7% 0 0 10%;
+    white-space: nowrap;
+}
+div p{
+    margin-right: 3%;
+    font-family: 'Shantell Sans', cursive;
 }
