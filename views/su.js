@@ -15,7 +15,10 @@ signup.addEventListener("click",()=>{
         })
     }).then((res)=>{
         if (res.status===200){
-            res.redirect("/");
+            window.location.href="/";
+        }
+        else if(res.status===301){
+            window.location.href="/signup";
         }
         else{
             alert('something weird happened');
