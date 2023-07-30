@@ -119,44 +119,51 @@ app.post("/login",(req,res)=>{
     }
   }); 
 });
-app.post("/signup",(req,res)=>{
-  const users=req.body;
+app.post("/signup", (req, res) => {
+  const users = req.body;
   console.log(users);
-  var f=0;  
-  req.session.error="";
+  var f = 0;
+  req.session.error = "";
+
   fs.readFile("./users.txt", 'utf8', (err, data) => {
     if (err) {
       console.error(err);
-      return;
+      return res.status(500).send("Error reading users file");
     }
-    try{
+
+    try {
       const parsedData = JSON.parse(data);
-      parsedData.forEach((item)=>{
-        if(item.email===users.email){
-          req.session.exist="User already exists";
-          res.redirect("/signup");
-          f=1;
-          return;
+      parsedData.forEach((item) => {
+        if (item.email === users.email && f===0) {
+          req.session.exist = "User already exists";
+          f = 1;
+          return res.status(301).send("User already exists");
         }
-        });
-        saveData("./users.txt",users,function(err){
-          if(err){
-              res.status(500).send("error");
-              f=1;
-              return;
-          }
-          req.session.user=users.username;
-          req.session.password=users.password;
-          req.session.isLoggedin=true;
-          if (f==0){res.redirect("/");}
-        });
-      }catch (err) {
-        console.error(err);
-      };
       });
-  
- 
+
+      if (f === 0) {
+        // Move the saveData function outside of the forEach loop to avoid multiple responses
+        saveData("./users.txt", users, function (err) {
+        
+          if (err) {
+            console.error(err);
+            return res.status(500).send("Error saving user data");
+          }
+          req.session.user = users.username;
+          req.session.password = users.password;
+          req.session.isLoggedin = true;
+
+          return res.redirect("/");
+        });
+      }
+
+    } catch (err) {
+      console.error(err);
+      // return res.status(500).send("Error parsing user data");
+    }
+  });
 });
+
 
 app.get("/logout",(req,res)=>{
 
