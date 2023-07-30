@@ -124,38 +124,38 @@ app.post("/signup", (req, res) => {
   console.log(users);
   var f = 0;
   req.session.error = "";
-
   fs.readFile("./users.txt", 'utf8', (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send("Error reading users file");
     }
-
     try {
       const parsedData = JSON.parse(data);
       parsedData.forEach((item) => {
         if (item.email === users.email && f===0) {
           req.session.exist = "User already exists";
           f = 1;
-          return res.status(301).send("User already exists");
+         res.sendStatus(304); 
+          return;
         }
       });
-
-      if (f === 0) {
-        // Move the saveData function outside of the forEach loop to avoid multiple responses
+      
+        if (f === 0) {
         saveData("./users.txt", users, function (err) {
         
           if (err) {
             console.error(err);
-            return res.status(500).send("Error saving user data");
+            // res.status(500).send("Error saving user data");
+            return;
           }
           req.session.user = users.username;
           req.session.password = users.password;
           req.session.isLoggedin = true;
-
-          return res.redirect("/");
+          console.log("User saved successfully");
+          res.sendStatus(200);
         });
       }
+      
 
     } catch (err) {
       console.error(err);
@@ -163,7 +163,6 @@ app.post("/signup", (req, res) => {
     }
   });
 });
-
 
 app.get("/logout",(req,res)=>{
 
