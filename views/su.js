@@ -17,7 +17,7 @@ signup.addEventListener("click",()=>{
         if (res.status===200){
             window.location.href="/";
         }
-        else if(res.status===301){
+        else if(res.status===304){
             window.location.href="/signup";
         }
         else{
