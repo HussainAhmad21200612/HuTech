@@ -122,46 +122,46 @@ app.post("/login",(req,res)=>{
 app.post("/signup", (req, res) => {
   const users = req.body;
   console.log(users);
-  var f = 0;
-  req.session.error = "";
+  const {username,password}=req.body;
   fs.readFile("./users.txt", 'utf8', (err, data) => {
     if (err) {
       console.error(err);
-      return res.status(500).send("Error reading users file");
+      return;
     }
+
     try {
       const parsedData = JSON.parse(data);
-      parsedData.forEach((item) => {
-        if (item.email === users.email && f===0) {
-          req.session.exist = "User already exists";
-          f = 1;
-         res.sendStatus(304); 
+      var f=0;
+      parsedData.forEach(function(item){
+        if(item.email===users.email && f==0){
+          req.session.exist="Username already exists!";
+          res.redirect("/signup");
+          f=1;
           return;
-        }
-      });
-      
-        if (f === 0) {
-        saveData("./users.txt", users, function (err) {
         
-          if (err) {
-            console.error(err);
-            // res.status(500).send("Error saving user data");
-            return;
-          }
-          req.session.user = users.username;
-          req.session.password = users.password;
-          req.session.isLoggedin = true;
-          console.log("User saved successfully");
-          res.sendStatus(200);
+        }
+        
         });
-      }
-      
-
-    } catch (err) {
+        if (f==0){
+          parsedData.push(users);
+          fs.writeFile("./users.txt", JSON.stringify(parsedData,null,2), function (err) {
+            if (err) {
+              console.error(err);
+              return;
+          }
+          req.session.user=users.username;
+          req.session.password=users.password;
+          req.session.isLoggedin=true;
+          res.redirect("/");
+          return;
+        });
+        }
+        
+        
+      }catch (err) { 
       console.error(err);
-      // return res.status(500).send("Error parsing user data");
     }
-  });
+  }); 
 });
 
 app.get("/logout",(req,res)=>{
