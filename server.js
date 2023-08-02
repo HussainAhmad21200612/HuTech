@@ -127,8 +127,6 @@ app.post("/signup", (req, res) => {
     phone: req.body.phone,
   }
   console.log(users);
-  const {username,password}=req.body;
-  console.log(username,password,photo);
   fs.readFile("./users.txt", 'utf8', (err, data) => {
     if (err) {
       console.error(err);
