@@ -119,8 +119,13 @@ app.post("/login",(req,res)=>{
     }
   }); 
 });
-app.post("/signup", (req, res) => {
-  const users = req.body;
+app.post("/signup", (req, res) => {      
+const users = {
+    username: req.body.username,
+    password: req.body.password,
+    email: req.body.email,
+    phone: req.body.phone,
+  }
   console.log(users);
   const {username,password}=req.body;
   fs.readFile("./users.txt", 'utf8', (err, data) => {
@@ -163,7 +168,6 @@ app.post("/signup", (req, res) => {
     }
   }); 
 });
-
 app.get("/logout",(req,res)=>{
 
   
