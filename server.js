@@ -271,8 +271,8 @@ function readAllTodos(file,callback){
         }
       });
     }
-server.listen("5000",()=>{
-console.log("Server started at 5000");
+server.listen("4000",()=>{
+console.log("Server started at 4000");
 });
 
 
